@@ -64,5 +64,15 @@ libuct_la_SOURCES += \
 	ib/rc/rc_mlx5.c
 endif
 
+if HAVE_TL_UD
+libuct_la_SOURCES += \
+	ib/ud/ud_verbs.c \
+	ib/ud/ud_iface.c
+
+noinst_HEADERS += \
+	ib/ud/ud_iface.h
+
+endif
+
 endif
 endif
