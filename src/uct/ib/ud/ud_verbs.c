@@ -102,7 +102,7 @@ static UCS_CLASS_CLEANUP_FUNC(uct_ud_verbs_iface_t)
     ucs_notifier_chain_remove(&context->progress_chain, uct_ud_verbs_iface_progress, self);
 }
 
-UCS_CLASS_DEFINE(uct_ud_verbs_iface_t, uct_iface_t);
+UCS_CLASS_DEFINE(uct_ud_verbs_iface_t, uct_ib_iface_t);
 static UCS_CLASS_DEFINE_NEW_FUNC(uct_ud_verbs_iface_t, uct_iface_t, uct_context_h,
         const char*, uct_iface_config_t*);
 static UCS_CLASS_DEFINE_DELETE_FUNC(uct_ud_verbs_iface_t, uct_iface_t);
