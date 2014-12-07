@@ -69,6 +69,7 @@ static UCS_CLASS_INIT_FUNC(uct_ib_iface_t, uct_iface_ops_t *ops,
 
     status = uct_ib_iface_find_port(ibctx, self, dev_name);
     if (status != UCS_OK) {
+        ucs_error("Failed to find port");
         goto err;
     }
 
