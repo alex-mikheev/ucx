@@ -12,8 +12,11 @@
 #include <uct/ib/base/ib_iface.h>
 #include <ucs/datastruct/sglib_wrapper.h>
 
+#include "ud_def.h"
+
 typedef struct uct_ud_iface {
-    uct_ib_iface_t           super;
+    uct_ib_iface_t  super;
+    struct ibv_qp   *qp;
 
     //uct_rc_ep_t              *eps[UCT_RC_QP_HASH_SIZE];
 

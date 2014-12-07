@@ -88,6 +88,8 @@ uct_iface_ops_t uct_ud_verbs_iface_ops = {
 static UCS_CLASS_INIT_FUNC(uct_ud_verbs_iface_t, uct_context_h context,
                                    const char *dev_name, uct_iface_config_t *tl_config)
 {
+    ucs_trace_func("");
+    ucs_warn("ud_verbs init");
     UCS_CLASS_CALL_SUPER_INIT(&uct_ud_verbs_iface_ops, context, dev_name);
 
     ucs_notifier_chain_add(&context->progress_chain, uct_ud_verbs_iface_progress,
@@ -102,7 +104,7 @@ static UCS_CLASS_CLEANUP_FUNC(uct_ud_verbs_iface_t)
     ucs_notifier_chain_remove(&context->progress_chain, uct_ud_verbs_iface_progress, self);
 }
 
-UCS_CLASS_DEFINE(uct_ud_verbs_iface_t, uct_ib_iface_t);
+UCS_CLASS_DEFINE(uct_ud_verbs_iface_t, uct_ud_iface_t);
 static UCS_CLASS_DEFINE_NEW_FUNC(uct_ud_verbs_iface_t, uct_iface_t, uct_context_h,
         const char*, uct_iface_config_t*);
 static UCS_CLASS_DEFINE_DELETE_FUNC(uct_ud_verbs_iface_t, uct_iface_t);
