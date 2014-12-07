@@ -31,18 +31,21 @@ static ucs_status_t uct_ud_verbs_query_resources(uct_context_h context,
         uct_resource_desc_t **resources_p,
         unsigned *num_resources_p)
 {
+    ucs_trace_func("");
     /* TODO take transport overhead into account */
     return uct_ib_query_resources(context, 0, resources_p, num_resources_p);
 }
 
 static UCS_CLASS_INIT_FUNC(uct_ud_verbs_ep_t, uct_iface_h tl_iface)
 {
+    ucs_trace_func("");
     UCS_CLASS_CALL_SUPER_INIT(tl_iface);
     return UCS_OK;
 }
 
 static UCS_CLASS_CLEANUP_FUNC(uct_ud_verbs_ep_t)
 {
+    ucs_trace_func("");
 }
 
 UCS_CLASS_DEFINE(uct_ud_verbs_ep_t, uct_ep_t);
@@ -56,6 +59,7 @@ static ucs_status_t uct_ud_verbs_ep_put_short(uct_ep_h tl_ep, void *buffer,
                                               uint64_t remote_addr,
                                               uct_rkey_t rkey)
 {
+    ucs_trace_func("");
     return UCS_OK;
 }
 
@@ -66,6 +70,7 @@ static void uct_ud_verbs_iface_progress(void *arg)
 
 static ucs_status_t uct_ud_verbs_iface_query(uct_iface_h tl_iface, uct_iface_attr_t *iface_attr)
 {
+    ucs_trace_func("");
     return UCS_OK;
 }
 
@@ -89,7 +94,6 @@ static UCS_CLASS_INIT_FUNC(uct_ud_verbs_iface_t, uct_context_h context,
                                    const char *dev_name, uct_iface_config_t *tl_config)
 {
     ucs_trace_func("");
-    ucs_warn("ud_verbs init");
     UCS_CLASS_CALL_SUPER_INIT(&uct_ud_verbs_iface_ops, context, dev_name);
 
     ucs_notifier_chain_add(&context->progress_chain, uct_ud_verbs_iface_progress,
@@ -101,6 +105,7 @@ static UCS_CLASS_INIT_FUNC(uct_ud_verbs_iface_t, uct_context_h context,
 static UCS_CLASS_CLEANUP_FUNC(uct_ud_verbs_iface_t)
 {
     uct_context_h context = self->super.super.super.pd->context;
+    ucs_trace_func("");
     ucs_notifier_chain_remove(&context->progress_chain, uct_ud_verbs_iface_progress, self);
 }
 

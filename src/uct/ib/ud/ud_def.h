@@ -11,6 +11,7 @@
 
 #define UCT_UD_TX_QP_LEN      128    
 #define UCT_UD_QP_HASH_SIZE   256    
+#define UCT_UD_QKEY    0x1ee7a330
     
     
 #endif
