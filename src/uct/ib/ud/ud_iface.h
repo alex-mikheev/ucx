@@ -14,6 +14,12 @@
 
 #include "ud_def.h"
 
+typedef struct uct_ud_iface_addr {
+    uct_iface_addr_t super;
+    uint32_t qp_num;
+    uint32_t lid;
+} uct_ud_iface_addr_t;
+
 typedef struct uct_ud_iface {
     uct_ib_iface_t  super;
     struct ibv_qp   *qp;

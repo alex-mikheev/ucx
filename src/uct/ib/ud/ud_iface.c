@@ -6,6 +6,7 @@
 */
 
 #include "ud_iface.h"
+#include "ud_ep.h"
 
 #include <ucs/debug/memtrack.h>
 #include <ucs/debug/log.h>
@@ -110,6 +111,8 @@ err:
 static UCS_CLASS_CLEANUP_FUNC(uct_ud_iface_t)
 {
     ucs_trace_func("");
+
+    ibv_destroy_qp(self->qp);
 }
 
 UCS_CLASS_DEFINE(uct_ud_iface_t, uct_ib_iface_t);
@@ -121,4 +124,38 @@ ucs_config_field_t uct_ud_iface_config_table[] = {
     {NULL}
 };
 
+
+void uct_ud_iface_query(uct_ud_iface_t *iface, uct_iface_attr_t *iface_attr)
+{
+    iface_attr->max_short      = 0;
+    iface_attr->max_bcopy      = 0;
+    iface_attr->max_zcopy      = 0;
+    iface_attr->iface_addr_len = sizeof(uct_ud_iface_addr_t);
+    iface_attr->ep_addr_len    = sizeof(uct_ud_ep_addr_t);
+    iface_attr->flags          = 0;
+
+}
+
+ucs_status_t uct_ud_iface_get_address(uct_iface_h tl_iface, uct_iface_addr_t *iface_addr)
+{
+    uct_ud_iface_t *iface = ucs_derived_of(tl_iface, uct_ud_iface_t);
+    uct_ud_iface_addr_t *addr = (uct_ud_iface_addr_t *)iface_addr;
+    uct_ib_device_t *dev;
+    uint32_t lid;
+
+    addr->qp_num = iface->qp->qp_num;
+    dev = uct_ib_iface_device(&iface->super);
+    lid = dev->port_attr[iface->super.port_num-dev->first_port].lid;
+    addr->lid = lid; 
+    ucs_debug("qpnum=%d lid=%d", addr->qp_num, addr->lid);
+
+    return UCS_OK;
+}
+
+ucs_status_t uct_ud_iface_flush(uct_iface_h tl_iface, uct_req_h *req_p,
+                uct_completion_cb_t cb)
+{
+    ucs_trace_func("");
+    return UCS_OK;
+}
 

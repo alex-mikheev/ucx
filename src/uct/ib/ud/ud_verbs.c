@@ -16,9 +16,10 @@
 #include <arpa/inet.h> /* For htonl */
 
 #include "ud_iface.h"
+#include "ud_ep.h"
 
 typedef struct {
-    uct_ep_t          super;
+    uct_ud_ep_t          super;
 } uct_ud_verbs_ep_t;
 
 typedef struct {
@@ -48,7 +49,7 @@ static UCS_CLASS_CLEANUP_FUNC(uct_ud_verbs_ep_t)
     ucs_trace_func("");
 }
 
-UCS_CLASS_DEFINE(uct_ud_verbs_ep_t, uct_ep_t);
+UCS_CLASS_DEFINE(uct_ud_verbs_ep_t, uct_ud_ep_t);
 static UCS_CLASS_DEFINE_NEW_FUNC(uct_ud_verbs_ep_t, uct_ep_t, uct_iface_h);
 static UCS_CLASS_DEFINE_DELETE_FUNC(uct_ud_verbs_ep_t, uct_ep_t);
 
@@ -59,7 +60,7 @@ static ucs_status_t uct_ud_verbs_ep_put_short(uct_ep_h tl_ep, void *buffer,
                                               uint64_t remote_addr,
                                               uct_rkey_t rkey)
 {
-    ucs_trace_func("");
+//    ucs_trace_data("buf=%p len=%d rva=0x%llx", buffer, length, (unsigned long long)remote_addr);
     return UCS_OK;
 }
 
@@ -70,7 +71,11 @@ static void uct_ud_verbs_iface_progress(void *arg)
 
 static ucs_status_t uct_ud_verbs_iface_query(uct_iface_h tl_iface, uct_iface_attr_t *iface_attr)
 {
+    uct_ud_iface_t *iface = ucs_derived_of(tl_iface, uct_ud_iface_t);
+
     ucs_trace_func("");
+    uct_ud_iface_query(iface, iface_attr);
+
     return UCS_OK;
 }
 
@@ -78,11 +83,11 @@ static void UCS_CLASS_DELETE_FUNC_NAME(uct_ud_verbs_iface_t)(uct_iface_t*);
 
 uct_iface_ops_t uct_ud_verbs_iface_ops = {
     .iface_close         = UCS_CLASS_DELETE_FUNC_NAME(uct_ud_verbs_iface_t),
-    .iface_get_address   = NULL,
-    .iface_flush         = NULL,
-    .ep_get_address      = NULL,
+    .iface_get_address   = uct_ud_iface_get_address,
+    .iface_flush         = uct_ud_iface_flush,
+    .ep_get_address      = uct_ud_ep_get_address,
     .ep_connect_to_iface = NULL,
-    .ep_connect_to_ep    = NULL, 
+    .ep_connect_to_ep    = uct_ud_ep_connect_to_ep, 
     .iface_query         = uct_ud_verbs_iface_query,
     .ep_put_short        = uct_ud_verbs_ep_put_short,
     .ep_create           = UCS_CLASS_NEW_FUNC_NAME(uct_ud_verbs_ep_t),

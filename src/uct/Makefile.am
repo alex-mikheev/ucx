@@ -67,10 +67,13 @@ endif
 if HAVE_TL_UD
 libuct_la_SOURCES += \
 	ib/ud/ud_verbs.c \
-	ib/ud/ud_iface.c
+	ib/ud/ud_iface.c \
+	ib/ud/ud_ep.c
 
 noinst_HEADERS += \
-	ib/ud/ud_iface.h
+	ib/ud/ud_iface.h \
+	ib/ud/ud_ep.h \
+	ib/ud/ud_def.h
 
 endif
 
