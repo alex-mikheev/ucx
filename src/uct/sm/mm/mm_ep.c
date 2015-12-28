@@ -478,3 +478,11 @@ ucs_status_t uct_mm_ep_get_bcopy(uct_ep_h tl_ep, uct_unpack_callback_t unpack_cb
     UCT_TL_EP_STAT_OP(ucs_derived_of(tl_ep, uct_base_ep_t), GET, BCOPY, length);
     return UCS_OK;
 }
+
+ucs_status_t uct_mm_ep_flush(uct_ep_h tl_ep)
+{
+    ucs_memory_cpu_store_fence();
+    UCT_TL_EP_STAT_FLUSH(ucs_derived_of(tl_ep, uct_base_ep_t));
+    return UCS_OK;
+}
+

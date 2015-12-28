@@ -35,7 +35,8 @@ public:
         uct_p2p_test::init();
         lbuf = new mapped_buffer(128, 0, sender());
         rbuf = new mapped_buffer(128, 0, receiver());
-        m_comp.func = atomic_completion;
+        m_comp.func  = atomic_completion;
+        m_comp.count = 0;
     }
 
     virtual void cleanup() {
@@ -110,6 +111,7 @@ public:
     }
 
     static void atomic_completion(uct_completion_t *self) {
+        printf("atomic completion");
     }
 
 protected:

@@ -80,13 +80,6 @@ void uct_mm_iface_release_am_desc(uct_iface_t *tl_iface, void *desc)
     ucs_mpool_put(mm_desc);
 }
 
-ucs_status_t uct_mm_ep_flush(uct_ep_h tl_ep)
-{
-    ucs_memory_cpu_store_fence();
-    UCT_TL_EP_STAT_FLUSH(ucs_derived_of(tl_ep, uct_base_ep_t));
-    return UCS_OK;
-}
-
 ucs_status_t uct_mm_iface_flush(uct_iface_h tl_iface)
 {
     ucs_memory_cpu_store_fence();
