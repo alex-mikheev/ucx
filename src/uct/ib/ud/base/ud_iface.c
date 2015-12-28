@@ -474,15 +474,16 @@ ucs_status_t uct_ud_iface_flush(uct_iface_h tl_iface)
         if ((status == UCS_ERR_NO_RESOURCE) || (status == UCS_INPROGRESS)) {
             ++count;
         } else if (status != UCS_OK) {
-            ucs_fatal("flush failed with %d", status);
             return status;
         }
     }
 
     uct_ud_leave(iface);
     if (count != 0) {
+        UCT_TL_IFACE_STAT_FLUSH_WAIT(&iface->super.super);
         return UCS_ERR_NO_RESOURCE;
     }
+    UCT_TL_IFACE_STAT_FLUSH(&iface->super.super);
     return UCS_OK;
 }
 

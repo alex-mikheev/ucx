@@ -126,6 +126,7 @@ ucs_status_t uct_rc_iface_flush(uct_iface_h tl_iface)
     }
 
     if (count != 0) {
+        UCT_TL_IFACE_STAT_FLUSH_WAIT(&iface->super.super);
         return UCS_ERR_NO_RESOURCE;
     }
 

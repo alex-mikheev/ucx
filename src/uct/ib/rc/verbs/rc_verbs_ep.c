@@ -624,10 +624,11 @@ ucs_status_t uct_rc_verbs_ep_flush(uct_ep_h tl_ep)
     ucs_status_t status;
 
     if (ep->super.available == iface->super.config.tx_qp_len) {
-        UCT_TL_EP_STAT_FLUSH(&ep->super);
+        UCT_TL_EP_STAT_FLUSH(&ep->super.super);
         return UCS_OK;
     }
 
+    UCT_TL_EP_STAT_FLUSH_WAIT(&ep->super.super);
     if (ep->super.unsignaled != 0) {
         if (IBV_DEVICE_HAS_NOP(&uct_ib_iface_device(&iface->super.super)->dev_attr)) {
             status = uct_rc_verbs_ep_nop(ep);

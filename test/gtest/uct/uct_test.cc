@@ -144,6 +144,13 @@ void uct_test::flush() const {
     }
 }
 
+void uct_test::short_progress_loop(double delay_ms) const {
+    ucs_time_t end_time = ucs_get_time() + ucs_time_from_msec(delay_ms * ucs::test_time_multiplier());
+    while (ucs_get_time() < end_time) {
+        progress();
+    }
+}
+
 uct_test::entity::entity(const resource& resource, uct_iface_config_t *iface_config,
                          size_t rx_headroom, uct_pd_config_t *pd_config) {
     ucs_status_t status;
