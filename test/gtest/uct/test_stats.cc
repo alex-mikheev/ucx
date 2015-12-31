@@ -1,7 +1,7 @@
 
 /**
 * Copyright (C) Mellanox Technologies Ltd. 2001-2014.  ALL RIGHTS RESERVED.
-* Copyright (C) UT-Battelle, LLC. 2014. ALL RIGHTS RESERVED.
+* Copyright (C) UT-Battelle, LLC. 2014-2015. ALL RIGHTS RESERVED.
 * See file LICENSE for terms.
 */
 extern "C" {
@@ -31,8 +31,8 @@ public:
         ASSERT_TRUE(ucs_stats_is_active());
 
         uct_p2p_test::init();
-        lbuf = new mapped_buffer(128, 0, sender());
-        rbuf = new mapped_buffer(128, 0, receiver());
+        lbuf = new mapped_buffer(64, 0, sender());
+        rbuf = new mapped_buffer(64, 0, receiver());
         m_comp.func  = atomic_completion;
         m_comp.count = 0;
     }
