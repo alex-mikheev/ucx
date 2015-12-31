@@ -62,10 +62,6 @@ ucs_status_t uct_cm_iface_flush(uct_iface_h tl_iface)
     ucs_status_t status;
 
     status = uct_cm_iface_flush_do(tl_iface);
-    if (status == UCS_ERR_NO_RESOURCE) {
-        UCT_TL_IFACE_STAT_FLUSH_WAIT(ucs_derived_of(tl_iface, uct_base_iface_t));
-        return status;
-    }
     UCT_TL_IFACE_STAT_FLUSH(ucs_derived_of(tl_iface, uct_base_iface_t));
     return status;
 }

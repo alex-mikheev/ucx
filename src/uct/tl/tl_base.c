@@ -34,7 +34,7 @@ static ucs_stats_class_t uct_iface_stats_class = {
     .counter_names = {
         [UCT_IFACE_STAT_RX_AM]       = "rx_am",
         [UCT_IFACE_STAT_RX_AM_BYTES] = "rx_am_bytes",
-        [UCT_IFACE_STAT_TX_WAIT]     = "tx_wait",
+        [UCT_IFACE_STAT_TX_NO_RES]   = "tx_no_res",
         [UCT_IFACE_STAT_FLUSH]       = "flush",
         [UCT_IFACE_STAT_FLUSH_WAIT]  = "flush_wait",
     }

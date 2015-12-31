@@ -23,11 +23,9 @@ public:
 
     virtual void init() {
 
-
         ucs_stats_cleanup();
         push_config();
         modify_config("STATS_DEST",    "file:/dev/null");
-        //modify_config("STATS_DEST",    "stdout");
         modify_config("STATS_TRIGGER", "exit");
         ucs_stats_init();
         ASSERT_TRUE(ucs_stats_is_active());
@@ -93,14 +91,14 @@ public:
     int fill_tx_q(int n) {
         int count_wait;
         int i, max;
-        size_t v;
+        size_t len;
 
         check_caps(UCT_IFACE_FLAG_AM_BCOPY);
         max = (n == 0) ? 1024 : n;
 
         for (count_wait = i = 0; i < max; i++) {
-            v = uct_ep_am_bcopy(sender_ep(), 0, mapped_buffer::pack, lbuf);
-            if (v != lbuf->length()) {
+            len = uct_ep_am_bcopy(sender_ep(), 0, mapped_buffer::pack, lbuf);
+            if (len != lbuf->length()) {
                 if (n == 0) {
                     return 1;
                 }
@@ -111,7 +109,6 @@ public:
     }
 
     static void atomic_completion(uct_completion_t *self) {
-        printf("atomic completion");
     }
 
 protected:
@@ -132,7 +129,7 @@ UCS_TEST_P(test_uct_stats, am_short)
     uct_iface_set_am_handler(receiver().iface(), 0, am_handler, 0);
 
     status = uct_ep_am_short(sender_ep(), 0, hdr, &send_data,
-            sizeof(send_data));
+                             sizeof(send_data));
     EXPECT_UCS_OK(status);
 
     check_tx_counters(UCT_EP_STAT_AM, UCT_EP_STAT_BYTES_SHORT, 
@@ -332,7 +329,7 @@ UCS_TEST_P(test_uct_stats, flush_wait_iface)
     count_wait = 0;
     do {
         status = uct_iface_flush(sender().iface());
-        if (status != UCS_OK) {
+        if (status == UCS_INPROGRESS) {
             count_wait++;
         }
         progress();
@@ -357,7 +354,7 @@ UCS_TEST_P(test_uct_stats, flush_wait_ep)
     count_wait = 0;
     do {
         status = uct_ep_flush(sender_ep());
-        if (status != UCS_OK) {
+        if (status == UCS_INPROGRESS) {
             count_wait++;
         }
         progress();
@@ -369,13 +366,13 @@ UCS_TEST_P(test_uct_stats, flush_wait_ep)
     EXPECT_EQ(count_wait, v);
 }
 
-UCS_TEST_P(test_uct_stats, tx_wait)
+UCS_TEST_P(test_uct_stats, tx_no_res)
 {
     uint64_t v, count;
 
     uct_iface_set_am_handler(receiver().iface(), 0, am_handler, 0);
     count = fill_tx_q(1024);
-    v = UCS_STATS_GET_COUNTER(uct_iface(sender())->stats, UCT_IFACE_STAT_TX_WAIT);
+    v = UCS_STATS_GET_COUNTER(uct_iface(sender())->stats, UCT_IFACE_STAT_TX_NO_RES);
     EXPECT_EQ(count, v);
     v = UCS_STATS_GET_COUNTER(uct_ep(sender())->stats, UCT_EP_STAT_AM);
     EXPECT_EQ(1024-count, v);

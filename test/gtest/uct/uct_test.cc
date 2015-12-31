@@ -348,7 +348,7 @@ void uct_test::entity::flush() const {
     do {
         uct_worker_progress(m_worker);
         status = uct_iface_flush(m_iface);
-    } while (status == UCS_ERR_NO_RESOURCE);
+    } while (status == UCS_INPROGRESS);
     ASSERT_UCS_OK(status);
 }
 

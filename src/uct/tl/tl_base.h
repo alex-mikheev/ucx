@@ -35,7 +35,7 @@ enum {
 enum {
     UCT_IFACE_STAT_RX_AM,
     UCT_IFACE_STAT_RX_AM_BYTES,
-    UCT_IFACE_STAT_TX_WAIT,
+    UCT_IFACE_STAT_TX_NO_RES,
     UCT_IFACE_STAT_FLUSH,
     UCT_IFACE_STAT_FLUSH_WAIT,  /* number of times flush called while in progress */
     UCT_IFACE_STAT_LAST
@@ -63,8 +63,8 @@ enum {
     UCS_STATS_UPDATE_COUNTER((_iface)->stats, UCT_IFACE_STAT_FLUSH, 1);
 #define UCT_TL_IFACE_STAT_FLUSH_WAIT(_iface) \
     UCS_STATS_UPDATE_COUNTER((_iface)->stats, UCT_IFACE_STAT_FLUSH_WAIT, 1);
-#define UCT_TL_IFACE_STAT_TX_WAIT(_iface) \
-    UCS_STATS_UPDATE_COUNTER((_iface)->stats, UCT_IFACE_STAT_TX_WAIT, 1);
+#define UCT_TL_IFACE_STAT_TX_NO_RES(_iface) \
+    UCS_STATS_UPDATE_COUNTER((_iface)->stats, UCT_IFACE_STAT_TX_NO_RES, 1);
 
 
 /**
@@ -249,7 +249,7 @@ typedef struct uct_iface_mpool_config {
     { \
         _desc = ucs_mpool_get(_mp); \
         if (ucs_unlikely((_desc) == NULL)) { \
-            UCT_TL_IFACE_STAT_TX_WAIT(_iface); \
+            UCT_TL_IFACE_STAT_TX_NO_RES(_iface); \
             _failure; \
         } \
         \

@@ -628,7 +628,6 @@ ucs_status_t uct_rc_verbs_ep_flush(uct_ep_h tl_ep)
         return UCS_OK;
     }
 
-    UCT_TL_EP_STAT_FLUSH_WAIT(&ep->super.super);
     if (ep->super.unsignaled != 0) {
         if (IBV_DEVICE_HAS_NOP(&uct_ib_iface_device(&iface->super.super)->dev_attr)) {
             status = uct_rc_verbs_ep_nop(ep);
@@ -639,7 +638,7 @@ ucs_status_t uct_rc_verbs_ep_flush(uct_ep_h tl_ep)
             return status;
         }
     }
-
+    UCT_TL_EP_STAT_FLUSH_WAIT(&ep->super.super);
     return UCS_INPROGRESS;
 }
 
